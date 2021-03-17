@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "935368378139",
+    "project_id": "forsageapp-e6cda",
+    "storage_bucket": "forsageapp-e6cda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935368378139:android:00717d418a76e8f852f5be",
+        "android_client_info": {
+          "package_name": "org.nativescript.forsageapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "935368378139-cequlf4u0g91u5ndu72l5seh9l7ivdf8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZY3ueRqsJtiuv831BgszaULKxOdOoWrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "935368378139-cequlf4u0g91u5ndu72l5seh9l7ivdf8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
