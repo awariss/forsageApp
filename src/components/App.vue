@@ -70,5 +70,6 @@ export default {
       font-size: 16px;
       position:relative;
       margin-top:90%;
+      width:20%
     }
 </style>
