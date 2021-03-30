@@ -1,6 +1,33 @@
 import Vue from 'nativescript-vue'
 import App from './components/App'
+import Login from './components/login'
 import VueDevtools from 'nativescript-vue-devtools'
+
+import VueApollo from "vue-apollo"
+import { ApolloClient } from 'apollo-client'
+import { createHttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+
+
+Vue.use(VueApollo);
+
+const httpLink = createHttpLink({
+  // You should use an absolute URL here
+  uri: 'https://api.forsage.net/graphql',
+})
+
+const cache = new InMemoryCache();
+
+export const apolloClient = new ApolloClient({
+  link:httpLink,
+  cache,
+});
+
+const apolloProvider = new VueApollo({
+    defaultClient: apolloClient
+});
+
+
 
 var firebase = require("@nativescript/firebase").firebase;
 
@@ -14,12 +41,6 @@ Vue.config.silent = (TNS_ENV === 'production')
 
 firebase.init({
 
-  /*firebase.login(
-  {
-    type: firebase.LoginType.ANONYMOUS
-  })
-  .then(user => console.log("User uid: " + user.uid))
-  .catch(error => console.log("Trouble in paradise: " + error));*/
 
   onPushTokenReceivedCallback: function(token) {
       console.log("Firebase push token: " + token);
@@ -45,5 +66,6 @@ firebase.init({
 
 new Vue({
   store,
-  render: h => h('frame', [h(App)])
+  apolloProvider,
+  render: h => h('frame', [h(Login)])
 }).$start()
