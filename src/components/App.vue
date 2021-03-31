@@ -5,7 +5,7 @@
         <GridLayout columns="*" rows="*">
         <WebView src="https://app.forsage.net/" />
 
-        <Button text="what is your token " @tap="doGetCurrentPushToken"> </Button>
+        <Button text="Your token" @tap="doGetCurrentPushToken"> </Button>
 
         </GridLayout>
     </Page>
@@ -57,11 +57,11 @@ export default {
 
 <style scoped>
     ActionBar {
-      background-color: #ffd300;
+      background-color: #ffc107;
       color: #000000;
     }
     Button {
-      background-color: #ffd300;
+      background-color: #ffc107;
       border: none;
       color: #ffffff;
       padding: 15px 32px;
@@ -70,6 +70,8 @@ export default {
       font-size: 16px;
       position:relative;
       margin-top:90%;
-      width:20%
+      margin-left:80%;
+      width:20%;
+      border-radius:20px;
     }
 </style>

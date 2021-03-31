@@ -2,6 +2,7 @@
   <Page>
   <ActionBar />
   <StackLayout class="form">
+    <Label v-model="jwt" />
   <StackLayout class="input-field">
     <Label text="Email"/>
     <TextField class="input" v-model="emailValue" keyboardType="email" autocorrect="false" autocapitalizationType="none"></TextField>
@@ -13,6 +14,11 @@
   </StackLayout>
 
   <Button text="Přihlásit" @tap="login"></Button>
+  <Button text="HivesS" @tap="hey"></Button>
+  <Button text="Show" @tap="show"></Button>
+  <Button text="Logout" @tap="logout"></Button>
+
+
 </StackLayout>
 
 </Page>
@@ -20,39 +26,36 @@
 
 <script >
 import { apolloClient } from "../main";
-import * as autenticateUser from "../../graphql/authenticateUser";
+import * as authenticateUser from "../../graphql/authenticateUser";
+import * as hives from "../../graphql/myHives";
 import { Dialogs } from "@nativescript/core";
 import { TextField } from "tns-core-modules/ui/text-field";
-import * as ApplicationSettings from "tns-core-modules/application-settings";
+
+const appSettings = require("tns-core-modules/application-settings");
 
 export default {
     methods: {
 
-      login(){
+      show(){
+        console.log(appSettings.getString("token"));
+      },
 
-        var jwt;
 
-        console.log(String(this.emailValue));
-        console.log(this.password);
+      logout(){
+        appSettings.remove("token");
+      },
 
+      hey(){
         apolloClient
-        .mutate({
+        .query({
          // Query
-         mutation: autenticateUser.LOGIN,
+         query: hives.HIVES,
          // Parameters
-         variables: {
-           /*email : this.emailValue,
-           password : this.password,*/
-           email : "demo@forsage.net",
-           password : "forsagedemo",
 
-         },
     })
        .then((data) => {
          // Result
          console.log(data);
-         jwt = data.data.authenticateUser.jwt;
-         console.log(data.data.authenticateUser.jwt);
 
        })
        .catch((error) => {
@@ -60,7 +63,38 @@ export default {
          console.error(error);
        });
 
-      
+      },
+
+
+      login(){
+
+        console.log(String(this.emailValue));
+        console.log(this.password);
+
+        apolloClient
+        .mutate({
+         // Query
+         mutation: authenticateUser.LOGIN,
+         // Parameters
+         variables: {
+           /*email : this.emailValue,
+           password : this.password,*/
+           email : "demo@forsage.net",
+           password : "forsagedemo",
+         },
+    })
+       .then((data) => {
+         // Result
+         console.log(data);
+         console.log(data.data.authenticateUser.jwt);
+         appSettings.setString('token',data.data.authenticateUser.jwt);
+       })
+       .catch((error) => {
+         // Error
+         console.error(error);
+       });
+
+
    },
   },
 
@@ -69,7 +103,8 @@ export default {
     data() {
       return {
         emailValue: '',
-        password:''
+        password:'',
+        jwt:''
     }
   }
 }
