@@ -1,28 +1,74 @@
 <template>
     <Page>
-        <ActionBar title="Forsage App" />
+      <ActionB />
 
-        <GridLayout columns="*" rows="*">
-        <WebView src="https://app.forsage.net/" />
+        <StackLayout>
 
-        <Button text="Your token" @tap="doGetCurrentPushToken"> </Button>
+        <Button text="Stanoviště" @tap="stanoviste"></Button>
+        <Button text="Show Pcm" @tap="doGetCurrentPushToken"> </Button>
+        <Button text="Show Jwt" @tap="show"></Button>
+        <Button text="Odhlásit" @tap="logout"></Button>
 
-        </GridLayout>
+      </StackLayout>
     </Page>
 </template>
 
 <script >
 import { Dialogs } from "@nativescript/core";
+import Login from './Login'
+import ActionB from './ActionBar'
+import { apolloClient } from "../main";
+import * as hives from "../../graphql/myHives";
+
+
 
 var firebase = require("@nativescript/firebase").firebase;
 
+const appSettings = require("tns-core-modules/application-settings");
+
+
 export default {
+
+    components: {
+       ActionB
+    },
+
     methods: {
 
-    showSideDrawer() {
-      console.log("Show SideDrawer tapped.");
-      // Show sidedrawer ...
-  },
+      stanoviste(){
+          apolloClient
+          .query({
+           // Query
+           query: hives.HIVES,
+           // Parameters
+
+      })
+         .then((data) => {
+           // Result
+           console.log(data);
+
+         })
+         .catch((error) => {
+           // Error
+           console.error(error);
+         });
+
+        },
+
+      show(){
+        Dialogs.alert({
+          title: "JWT token",
+          message: appSettings.getString("token"),
+          okButtonText: "Close"
+        }).then(function () {
+          console.log("Dialog closed!");
+        });
+      },
+
+      logout(){
+        appSettings.remove("token");
+        this.$navigateTo(Login);
+      },
 
 
     doGetCurrentPushToken() {
@@ -56,22 +102,9 @@ export default {
 </script>
 
 <style scoped>
-    ActionBar {
-      background-color: #ffc107;
-      color: #000000;
-    }
     Button {
       background-color: #ffc107;
       border: none;
       color: #ffffff;
-      padding: 15px 32px;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      position:relative;
-      margin-top:90%;
-      margin-left:80%;
-      width:20%;
-      border-radius:20px;
-    }
+      }
 </style>

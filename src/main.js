@@ -1,6 +1,6 @@
 import Vue from 'nativescript-vue'
 import App from './components/App'
-import Login from './components/login'
+import Login from './components/Login'
 import VueDevtools from 'nativescript-vue-devtools'
 
 import VueApollo from "vue-apollo"
@@ -74,4 +74,5 @@ new Vue({
   store,
   apolloProvider,
   render: h => h('frame', [h(Login)])
+
 }).$start()
