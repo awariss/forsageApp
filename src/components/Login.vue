@@ -1,9 +1,11 @@
 
 
 <template>
-  <Page>
+  <Page @loaded="checkJwt">
   <ActionB />
   <StackLayout class="form">
+  <Image src="~/assets/images/logo_black.png" stretch="aspectFit"/>
+
   <StackLayout class="input-field">
     <Label text="Email"/>
     <TextField class="input" v-model="emailValue" keyboardType="email" autocorrect="false" autocapitalizationType="none"></TextField>
@@ -31,6 +33,7 @@ import { TextField } from "tns-core-modules/ui/text-field";
 
 const appSettings = require("tns-core-modules/application-settings");
 
+
 export default {
 
     components: {
@@ -38,6 +41,15 @@ export default {
     },
 
     methods: {
+
+      checkJwt (){
+
+        if(appSettings.getString('token') != null)
+        {
+          this.$navigateTo(App);
+        }
+
+      },
 
       login(){
 
@@ -108,6 +120,7 @@ TextField {
   margin-right: 30;
   flex-grow: 2;
   vertical-align: middle;
+
 }
 
 Button {
