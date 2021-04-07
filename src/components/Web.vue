@@ -6,7 +6,7 @@
 
 <script >
 import Login from './Login';
-import { WebViewInterface } from './lib/nativescript-webview-interface';
+import { WebViewInterface } from 'nativescript-webview-interface';
 import {WebView, LoadEventData} from 'tns-core-modules//ui/web-view';
 
 var webViewInterfaceModule = require('nativescript-webview-interface');
