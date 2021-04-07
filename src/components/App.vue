@@ -1,11 +1,10 @@
 <template>
-    <Page>
+    <Page @loaded="makeUrl">
       <ActionB />
 
         <StackLayout>
-
-        <Button text="Stanoviště" @tap="stanoviste"></Button>
-        <Button text="Show Pcm" @tap="doGetCurrentPushToken"> </Button>
+        <Label v-model=this.url />
+        <Button text="Show Pcm" @tap="doGetCurrentPushToken"></Button>
         <Button text="Show Jwt" @tap="show"></Button>
         <Button text="Odhlásit" @tap="logout"></Button>
 
@@ -15,8 +14,8 @@
 
 <script >
 import { Dialogs } from "@nativescript/core";
-import Login from './Login'
-import ActionB from './ActionBar'
+import Login from './Login';
+import ActionB from './ActionBar';
 import { apolloClient } from "../main";
 import * as hives from "../../graphql/myHives";
 
@@ -35,25 +34,9 @@ export default {
 
     methods: {
 
-      stanoviste(){
-          apolloClient
-          .query({
-           // Query
-           query: hives.HIVES,
-           // Parameters
-
-      })
-         .then((data) => {
-           // Result
-           console.log(data);
-
-         })
-         .catch((error) => {
-           // Error
-           console.error(error);
-         });
-
-        },
+      makeUrl(){
+        this.url="https://app.forsage.net/login?jwt="+appSettings.getString('token');
+      },
 
       show(){
         Dialogs.alert({
@@ -94,8 +77,8 @@ export default {
 
     data() {
       return {
-        msg: 'Hello World!',
-    }
+        url:'',
+    };
   }
 }
 

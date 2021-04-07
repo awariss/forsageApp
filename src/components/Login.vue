@@ -5,7 +5,6 @@
   <ActionB />
   <StackLayout class="form">
   <Image src="~/assets/images/logo_black.png" stretch="aspectFit"/>
-
   <StackLayout class="input-field">
     <Label text="Email"/>
     <TextField class="input" v-model="emailValue" keyboardType="email" autocorrect="false" autocapitalizationType="none"></TextField>
@@ -17,15 +16,17 @@
   </StackLayout>
 
   <Button text="Přihlásit" @tap="login"></Button>
-</StackLayout>
 
-</Page>
+  </StackLayout>
+
+  </Page>
 </template>
 
 <script >
 
 import ActionB from './ActionBar'
 import App from './App'
+import Web from './Web'
 import { apolloClient } from "../main";
 import * as authenticateUser from "../../graphql/authenticateUser";
 import { Dialogs } from "@nativescript/core";
@@ -46,7 +47,7 @@ export default {
 
         if(appSettings.getString('token') != null)
         {
-          this.$navigateTo(App);
+          this.$navigateTo(Web);
         }
 
       },
@@ -73,7 +74,7 @@ export default {
          console.log(data);
          console.log(data.data.authenticateUser.jwt);
          appSettings.setString('token',data.data.authenticateUser.jwt);
-         this.$navigateTo(App);
+         this.$navigateTo(Web);
        })
        .catch((error) => {
          // Error
