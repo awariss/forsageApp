@@ -14,8 +14,9 @@
     <Label text="Heslo"/>
     <TextField class="input" v-model="password" secure="true" autocorrect="false" autocapitalizationType="none"></TextField>
   </StackLayout>
+  <Button text="Přihlásit"  @tap="login"></Button>
+  <Button text="Nemáte účet?" class="register" @tap="register"></Button>
 
-  <Button text="Přihlásit" @tap="login"></Button>
 
   </StackLayout>
 
@@ -27,10 +28,12 @@
 import ActionB from './ActionBar'
 import App from './App'
 import Web from './Web'
+import Register from './Register'
 import { apolloClient } from "../main";
 import * as authenticateUser from "../../graphql/authenticateUser";
 import { Dialogs } from "@nativescript/core";
 import { TextField } from "tns-core-modules/ui/text-field";
+import { Utils } from "@nativescript/core";
 
 const appSettings = require("tns-core-modules/application-settings");
 
@@ -43,7 +46,11 @@ export default {
 
     methods: {
 
-      checkJwt (){
+      register(){
+        this.$navigateTo(Register);
+      },
+
+      checkJwt(){
 
         if(appSettings.getString('token') != null)
         {
@@ -54,8 +61,14 @@ export default {
 
       login(){
 
-        console.log(String(this.emailValue));
-        console.log(this.password);
+        if(this.email=="" || this.password=="" ){
+          Dialogs.alert({
+            title: "Přihlášení",
+            message: "Prázdné pole pro přihlašovací údaje",
+            okButtonText: "Zavřít"
+          });
+          return;
+        }
 
         apolloClient
         .mutate({
@@ -71,8 +84,6 @@ export default {
     })
        .then((data) => {
          // Result
-         console.log(data);
-         console.log(data.data.authenticateUser.jwt);
          appSettings.setString('token',data.data.authenticateUser.jwt);
          this.$navigateTo(Web);
        })
@@ -123,6 +134,11 @@ TextField {
   vertical-align: middle;
 
 }
+.register{
+  background:#ffffff;
+  color:#000000;
+}
+
 
 Button {
   background-color: #ffc107;
