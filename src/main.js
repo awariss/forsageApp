@@ -1,5 +1,5 @@
 import Vue from 'nativescript-vue'
-import App from './components/App'
+import Bluetooth from './components/Bluetooth'
 import Login from './components/Login'
 import VueDevtools from 'nativescript-vue-devtools'
 

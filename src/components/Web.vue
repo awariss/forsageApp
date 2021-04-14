@@ -1,5 +1,5 @@
 <template>
-    <Page xmlns="http://schemas.nativescript.org/tns.xsd" @loaded="pageLoaded">
+    <Page xmlns="http://schemas.nativescript.org/tns.xsd" @loaded="pageLoaded" actionBarHidden="true">
       <web-view id="webView"></web-view>
     </Page>
 </template>
@@ -25,7 +25,7 @@ export default {
 
       listenLangWebViewEvents(){
           // handles language selectionChange event.
-          oLangWebViewInterface.on('click', () => {
+          oLangWebViewInterface.on('logout', () => {
                 console.log("Button on webview was click");
                 this.logout();
           });
@@ -33,7 +33,8 @@ export default {
 
       setupWebViewInterface(page){
           var webView = page.getViewById('webView');
-          oLangWebViewInterface = new webViewInterfaceModule.WebViewInterface(webView, "http://ddd.4fan.cz/");
+          var url= "https://app.forsage.net/login?jwt="+appSettings.getString('token');
+          oLangWebViewInterface = new webViewInterfaceModule.WebViewInterface(webView, url);
           this.listenLangWebViewEvents();
       },
 
