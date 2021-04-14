@@ -27,7 +27,6 @@ export default {
           // handles language selectionChange event.
           oLangWebViewInterface.on('login', (jwt) => {
                 console.log("Button on webview was click");
-                console.log(jwt.jwt);
                 this.login(jwt.jwt);
         });
       },
