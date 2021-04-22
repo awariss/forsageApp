@@ -25,10 +25,10 @@
 
 <script >
 
-import ActionB from './ActionBar'
-import App from './App'
-import Web from './Web'
-import Register from './Register'
+import ActionB from './ActionBar';
+import App from './App';
+import Web from './Web';
+import Register from './Register';
 import { apolloClient } from "../main";
 import * as authenticateUser from "../../graphql/authenticateUser";
 import { Dialogs } from "@nativescript/core";
@@ -78,8 +78,8 @@ export default {
          variables: {
            /*email : this.emailValue,
            password : this.password,*/
-           email : "demo@forsage.net",
-           password : "forsagedemo",
+           email : "jena.osolso@gmail.com",
+           password : "123456",
          },
     })
        .then((data) => {

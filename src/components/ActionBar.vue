@@ -1,12 +1,15 @@
 <template>
-  <ActionBar />
-
+  <ActionBar>
+  </ActionBar>
 </template>
 
 
 <script >
 
 export default{
+
+
+
 }
 
 </script>

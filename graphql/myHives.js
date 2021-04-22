@@ -2,15 +2,23 @@ import { gql } from "apollo-boost";
 
 export const HIVES = gql`
 query myHives {
-	currentAccount {
-    id
-    sites {
-      hives {
+  currentAccount {
+    hwSensors {
+      nodes {
         id
-        name
+        serialNumber
         internalName
-        activeMetrics
+        activeHwHub {
+          activeSite {
+            id
+            name
+          }
         }
+        activeHive {
+          id
+          name
+        }
+      }
     }
   }
 }

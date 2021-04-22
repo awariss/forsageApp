@@ -9,7 +9,6 @@ import { createHttpLink } from 'apollo-link-http'
 import { setContext } from '@apollo/client/link/context';
 import { InMemoryCache } from 'apollo-cache-inmemory'
 
-
 Vue.use(VueApollo);
 
 const appSettings = require("tns-core-modules/application-settings");
