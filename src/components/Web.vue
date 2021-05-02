@@ -1,10 +1,10 @@
 <template>
-    <Page xmlns="http://schemas.nativescript.org/tns.xsd" @loaded="pageLoaded" actionBarHidden="true">
-      <FlexboxLayout flexDirection="column" >
+  <Page xmlns="http://schemas.nativescript.org/tns.xsd" @loaded="pageLoaded" actionBarHidden="true">
+    <FlexboxLayout flexDirection="column" >
       <web-view id="webView" height="90%"></web-view>
       <Button text="BLue"  @tap="tap"></Button>
-      </FlexboxLayout>
-    </Page>
+    </FlexboxLayout>
+  </Page>
 </template>
 
 <script >
@@ -21,52 +21,69 @@ const appSettings = require("tns-core-modules/application-settings");
 
 export default {
 
-    methods: {
-      tap(){
-        this.$navigateTo(Bluetooth);
-      },
+  methods: {
+    tap(){
+      this.$navigateTo(Bluetooth);
+    },
 
-      logout(){
-        appSettings.remove("token");
-        this.$navigateTo(Login);
-      },
+    logout(){
+      appSettings.remove("token");
+      this.$navigateTo(Login);
+    },
 
-      changeAcount(jwt){
-        appSettings.setString('token',jwt);
-        this.$navigateTo(Web);
-      },
+    changeAcount(jwt){
+      appSettings.setString('token',jwt);
+      this.$navigateTo(Web);
+    },
 
-      listenLangWebViewEvents(){
-          // handles language selectionChange event.
-          oLangWebViewInterface.on('logout', () => {
-                console.log("Button on webview was click");
-                this.logout();
-          });
-          oLangWebViewInterface.on('login', (jwt) => {
-                console.log("Button on webview was click");
-                this.changeAcount(jwt.jwt);
-          });
-      },
+    listenLangWebViewEvents(){
+      // handles language selectionChange event.
+      oLangWebViewInterface.on('logout', () => {
+        console.log("Button on webview was click");
+        this.logout();
+      });
 
-      setupWebViewInterface(page){
-          var webView = page.getViewById('webView');
-          var url= "https://app.forsage.net/login?jwt="+appSettings.getString('token');
-          oLangWebViewInterface = new webViewInterfaceModule.WebViewInterface(webView, url);
-          this.listenLangWebViewEvents();
-      },
+      oLangWebViewInterface.on('login', (jwt) => {
+        console.log("Button on webview was click");
+        this.changeAcount(jwt.jwt);
+      });
 
-      pageLoaded(args){
-          var page = args.object;
-          this.setupWebViewInterface(page);
-      },
+      oLangWebViewInterface.on('click', (jwt) => {
+        console.log("Button on webview was click");
+        this.loadInWebView();
+      });
+
+    },
+
+    loadInWebView(){
+      console.log("Emit webview");
+      oLangWebViewInterface.emit('mobileApp');
     },
 
 
-    data() {
-      return {
-        url:'',
-      }
+    setupWebViewInterface(page){
+      var webView = page.getViewById('webView');
+      var url= "https://app.forsage.net/login?jwt="+appSettings.getString('token');
+      oLangWebViewInterface = new webViewInterfaceModule.WebViewInterface(webView, 'http://ddd.4fan.cz/');
+
+      webView.on(WebView.loadFinishedEvent, (LoadEventData) => {
+           this.loadInWebView();
+      })
+      this.listenLangWebViewEvents();
+  },
+
+    pageLoaded(args){
+      var page = args.object;
+      this.setupWebViewInterface(page);
+    },
+  },
+
+
+  data() {
+    return {
+      url:'',
     }
+  }
 
 }
 
@@ -75,4 +92,4 @@ export default {
 <style scoped>
 
 .bt{}
-</style>
+  </style>
