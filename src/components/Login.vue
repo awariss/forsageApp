@@ -35,12 +35,16 @@ import ActionB from "./ActionBar";
 import Web from "./Web";
 import Register from "./Register";
 import { apolloClient } from "../main";
+
 import * as authenticateUser from "../../graphql/authenticateUser";
+import * as registePushNotificationToken from "../../graphql/registerPushNotificationToken";
+
 import { Dialogs } from "@nativescript/core";
 import { TextField } from "tns-core-modules/ui/text-field";
 import { Utils } from "@nativescript/core";
 
 const appSettings = require("tns-core-modules/application-settings");
+const firebase = require("@nativescript/firebase").firebase;
 
 export default {
   components: {
@@ -53,9 +57,33 @@ export default {
     },
 
     checkJwt() {
-      if (appSettings.getString("token") != null) {
+      if (appSettings.hasKey("token")) {
         this.$navigateTo(Web);
       }
+    },
+
+    savePushNotificationTokenToServer() {
+      firebase.getCurrentPushToken().then(token => {
+        console.log("Current push token: " + token);
+
+        apolloClient
+          .mutate({
+            // Query
+            mutation: registePushNotificationToken.REGISTER_TOKEN,
+            // Parameters
+            variables: {
+              pushToken: token
+            }
+          })
+          .then(data => {
+            // Result
+            //  console.log(data);
+          })
+          .catch(error => {
+            // Error
+            console.error(error);
+          });
+      });
     },
 
     login() {
@@ -74,25 +102,32 @@ export default {
           mutation: authenticateUser.LOGIN,
           // Parameters
           variables: {
-            /*email : this.emailValue,
-           password : this.password,*/
-            email: "jena.osolso@gmail.com",
-            password: "123456"
+            email: this.emailValue,
+            password: this.password
           }
         })
         .then(data => {
           // Result
           appSettings.setString("token", data.data.authenticateUser.jwt);
+          this.savePushNotificationTokenToServer();
           this.$navigateTo(Web);
         })
         .catch(error => {
           // Error
           console.error(error);
-          Dialogs.alert({
-            title: "Přihlášení",
-            message: "Špatné přihlašovací údaje",
-            okButtonText: "Zavřít"
-          });
+          if (error == "Error: Network error: Network request failed") {
+            Dialogs.alert({
+              title: "Bez připojení k internet",
+              message: "Prosím, připojte se.",
+              okButtonText: "Zavřít"
+            });
+          } else {
+            Dialogs.alert({
+              title: "Přihlášení",
+              message: "Špatné přihlašovací údaje",
+              okButtonText: "Zavřít"
+            });
+          }
         });
     }
   },

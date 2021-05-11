@@ -1,3 +1,9 @@
+/**
+ * Bachelor thesis mobile application for beehive monitoring
+ * Created by Jan Osolsobe (Faculty of Information Technology BUT)
+ * Brno, Czech Republic
+ */
+
 <template>
   <Page @loaded="takeDataHives">
     <ActionB />
@@ -112,7 +118,7 @@ import { Bluetooth } from "@nativescript-community/ble";
 import { apolloClient } from "../main";
 import * as myHives from "../../graphql/myHives";
 
-const appSettings = require("tns-core-modules/application-settings");
+const appSettings = require("tns-core-modules/application-settings");   // local storage
 var bluetooth = new Bluetooth();
 var timer = require("timer");
 
@@ -122,15 +128,17 @@ export default {
   },
 
   methods: {
+    //stop call scan function
     stop() {
       clearInterval(this.interval);
     },
 
+    //open detail of senzores
     onItemTap(event) {
-      //console.log(event);
       this.$showModal(Detail, { props: { senzor: event.item } });
     },
 
+    //make mac from uuid
     makeMac(uuid) {
       return (
         "0000" +
@@ -143,6 +151,7 @@ export default {
       );
     },
 
+    //return true if uuid in array in your senzores
     isSenzorYour(uuid) {
       let is = false;
       this.nodes.forEach(item => {
@@ -153,6 +162,7 @@ export default {
       return is;
     },
 
+    //return true if senzor is already found
     isSenzorInArray(uuid) {
       let is = false;
       this.senzors.forEach(item => {
@@ -163,6 +173,7 @@ export default {
       return is;
     },
 
+    //take data from server about hives
     takeDataHives() {
       let self = this;
       apolloClient
@@ -180,6 +191,7 @@ export default {
         });
     },
 
+    //update data about senzor
     upDateData(uuid, mac, rssi, temp, hum, volt) {
       this.senzors.forEach(item => {
         if (item.id == uuid) {
@@ -191,6 +203,7 @@ export default {
       });
     },
 
+    //assign data about hives to senzor
     saveDataAboutHives(mac) {
       let sName, hName, siName;
       this.nodes.forEach(item => {
@@ -210,6 +223,7 @@ export default {
       });
     },
 
+    //save new senzor to array
     saveSenzor(uuid, mac, rssi, temp, hum, volt) {
       console.log("saveSenzor");
       this.senzors.push({
@@ -226,6 +240,7 @@ export default {
       this.saveDataAboutHives(mac);
     },
 
+    //take data from ruuvi and modify to values
     takeDataFromRuuvi(bufView, uuid, rssi) {
       let version = new Uint8Array(bufView.slice(0, 1));
 
@@ -241,14 +256,6 @@ export default {
 
       let mac = this.makeMac(uuid);
 
-      /*  console.log("\nMAC adress: " + mac);
-      console.log("UUID: " + uuid);
-      console.log("RSSI: " + rssi);
-      console.log("version: " + version[0]);
-      console.log("temperature: " + temperature + " °C");
-      console.log("humidity: " + humidity + " %");
-      console.log("voltage: "+ voltage + " V"); */
-
       if (!this.isSenzorInArray(uuid)) {
         this.saveSenzor(uuid, mac, rssi, temperature, humidity, voltage);
       } else {
@@ -257,6 +264,7 @@ export default {
       }
     },
 
+    //scan using bluetooth
     scan() {
       this.enabledBluetooth();
       console.log("scanStart");
@@ -284,6 +292,7 @@ export default {
         );
     },
 
+    // check if bluetooth is enabled
     enabledBluetooth() {
       bluetooth.isBluetoothEnabled().then(function(enabled) {
         console.log("Enabled? " + enabled);
@@ -298,28 +307,30 @@ export default {
       });
     },
 
+    //on tap button
     tap() {
-      this.busy = true;
+      this.busy = true; //activity indivator
       this.scan();
       this.interval = setInterval(() => this.scan(), 5000);
     },
 
+    //go back to webview and stop interval
     back() {
       clearInterval(this.interval);
-      this.$navigateTo(Web);
+      this.$navigateBack();
     }
   },
 
   data() {
     return {
-      busy: false,
-      senzors: [],
-      nodes: []
+      busy: false,  //Activity indicator
+      senzors: [],  //Data about senzors
+      nodes: []     //Data about hives from server
     };
   }
 };
 </script>
-
+}
 <style scoped>
 GridLayout {
   margin: 20;

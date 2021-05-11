@@ -1,4 +1,10 @@
-<template>
+/**
+ * Bachelor thesis mobile application for beehive monitoring
+ * Created by Jan Osolsobe (Faculty of Information Technology BUT)
+ * Brno, Czech Republic
+ */
+
+ <template>
   <ActionBar>
     <StackLayout orientation="horizontal">
       <Label horizontalAlignment="left" width="70%" text="Forsage - App" />
