@@ -103,7 +103,6 @@ export default {
     //setup page
     pageLoaded(args) {
       let page = args.object;
-      this.printRegDev();
       this.setupWebViewInterface(page);
     }
   },
