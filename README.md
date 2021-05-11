@@ -21,9 +21,10 @@ tns run
 ```
 
 ## Storage
-
-> ./App_Resources - native code for application
-> ./doc - documentation for sending notification from server
-> ./graphql - mutation in GraphQl
-> ./src/components - components of application
-> ./src/assets/images - images in application
+```
+  ./App_Resources - native code for application
+  ./doc - documentation for sending notification from server
+  ./graphql - mutation in GraphQl
+  ./src/components - components of application
+  ./src/assets/images - images in application
+```
