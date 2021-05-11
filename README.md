@@ -1,8 +1,8 @@
 # ForsageApp
 
-> Bachelor thesis mobile application for beehive monitoring
-> Created by Jan Osolsobe (Faculty of Information Technology BUT)
-> Brno, Czech Republic
+Bachelor thesis mobile application for beehive monitoring
+Created by Jan Osolsobe (Faculty of Information Technology BUT)
+Brno, Czech Republic
 
 ## Install and usage
 
